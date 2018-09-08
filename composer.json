@@ -26,5 +26,8 @@
             "GPBMetadata\\Google\\Protobuf\\": "src/GPBMetadata/Google/Protobuf"
         }
     },
-    "require-dev": {}
+    "require-dev": {},
+    "bin": [
+        "bin/protoc-gen-cotars"
+    ]
 }
