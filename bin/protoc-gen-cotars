@@ -1,7 +1,7 @@
 #!/usr/bin/env php -n
 <?php
 
-require 'vendor/autoload.php';
+include_once __DIR__.'/../vendor/autoload.php';
 
 $data = file_get_contents('php://stdin');
 file_put_contents('./proto/demo.bin', $data);
