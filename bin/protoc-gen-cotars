@@ -1,0 +1,10 @@
+#!/usr/bin/env php -n
+<?php
+
+require 'vendor/autoload.php';
+
+$data = file_get_contents('php://stdin');
+file_put_contents('./proto/demo.bin', $data);
+$plugin = new Cotars\Protoc\Plugin($data);
+$response = $plugin->builder()->build($plugin);
+echo $response->serializeToString();

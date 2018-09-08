@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package demo.test.all;
+
+import "inc.proto";
+// import "sub/sub.proto";
+
+enum Types {
+    NIL = 0;
+    ONE = 1;
+}
+
+message Msg {
+    enum TypesInner {
+        NIL = 0;
+        ONE = 1;
+    }
+    int32 int32Val = 1;
+    uint32 uint32Val = 2;
+    bool boolVal = 3;
+    Types type = 4;
+    TypesInner type2 = 5;
+    demo.test.inc.IncMsg incMsg = 6;
+    demo.test.inc.IncEnum incEnum = 7;
+    demo.test.inc.sub.SubMsg subMsg = 8;
+}
+
+message SvrCallReq {
+    message MsgInner {
+        int32 int32ValInner = 1;
+    }
+    Msg msg = 1;
+    MsgInner msgInner = 2;
+    Msg.TypesInner ot = 3;
+}
+
+message SvrCallRes {
+    Msg msg = 1;
+}
+
+service Svr {
+    rpc call(SvrCallReq) returns (SvrCallRes);
+    rpc stream(stream SvrCallReq) returns (stream SvrCallRes);
+}

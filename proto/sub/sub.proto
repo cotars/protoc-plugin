@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package demo.test.inc.sub;
+
+message SubMsg {
+}
+
+enum SubEnum {
+    NIL = 0;
+}
