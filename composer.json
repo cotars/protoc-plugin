@@ -8,7 +8,7 @@
         "protoc"
     ],
     "homepage": "https://github.com/cotars/protoc-plugin",
-    "type": "project",
+    "type": "library",
     "license": "MIT",
     "authors": [
         {
