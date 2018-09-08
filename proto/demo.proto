@@ -18,6 +18,9 @@ message Msg {
     demo.test.inc.IncMsg incMsg = 6;
     demo.test.inc.IncEnum incEnum = 7;
     demo.test.inc.sub.SubMsg subMsg = 8;
+    repeated demo.test.inc.sub.SubMsg subMsgs = 9;
+    repeated uint32 uint32Vals = 10;
+    map<string, demo.test.inc.sub.SubMsg> maps = 11;
 }
 
 message SvrCallReq {

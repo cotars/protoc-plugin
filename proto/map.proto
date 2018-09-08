@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package demo.test.all;
+
+message Mv {
+
+}
+
+message Msg {
+
+    map<string, Mv> strs  = 1;
+
+}

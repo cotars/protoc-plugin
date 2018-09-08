@@ -5,12 +5,13 @@ namespace Cotars\Protoc\Plugins\JavaBean;
 use Cotars\Protoc\Plugins\GenMessageBase;
 use Cotars\Protoc\Plugins\JavaBean\JavaTrait;
 use Exception;
+use Google\Protobuf\Internal\DescriptorProto;
 use Google\Protobuf\Internal\FieldDescriptorProto;
-use Google\Protobuf\Internal\FieldDescriptorProto_Type as FieldType;
-
+use Google\Protobuf\Internal\FieldDescriptorProto_Label as FiledLable;
 class GenMessage extends GenMessageBase
 {
     use JavaTrait;
+    
     public function generate(): void
     {
         $this->pushLine(sprintf(
@@ -28,48 +29,34 @@ class GenMessage extends GenMessageBase
         $this->pushLine('}');
     }
 
+    protected function mapNested(DescriptorProto $nested)
+    {
+        if (!$nested->getOptions()->getMapEntry()) {
+            return;
+        }
+        array_push($this->mapEntrys, $nested->getName());
+    }
+
     protected function genField(FieldDescriptorProto $field)
     {
-        $javaType = '';
-        switch ($field->getType()) {
-            case FieldType::TYPE_INT32:
-            case FieldType::TYPE_UINT32:
-            case FieldType::TYPE_SINT32:
-            case FieldType::TYPE_FIXED32:
-            case FieldType::TYPE_SFIXED32:
-                $javaType = 'int';
-                break;
-            
-            case FieldType::TYPE_INT64:
-            case FieldType::TYPE_UINT64:
-            case FieldType::TYPE_SINT64:
-            case FieldType::TYPE_FIXED64:
-            case FieldType::TYPE_SFIXED64:
-                $javaType = 'long';
-                break;
-            case FieldType::TYPE_DOUBLE:
-                $javaType = 'double';
-                break;
-            case FieldType::TYPE_FLOAT:
-                $javaType = 'float';
-                break;
-            case FieldType::TYPE_BOOL:
-                $javaType = 'boolean';
-                break;
-            case FieldType::TYPE_STRING:
-                $javaType = 'String';
-                break;
-            case FieldType::TYPE_BYTES:
-                $javaType = 'ByteString';
-                break;
-            case FieldType::TYPE_ENUM:
-            case FieldType::TYPE_MESSAGE:
-                $javaType = trim($field->getTypeName(), '.');
-                break;
-            default:
-                throw new Exception("not support type".$field->getType());
+        $javaType = $this->getFiledType($field);
+        if ($field->getLabel() === FiledLable::LABEL_REPEATED) {
+            //is map field
+            if ($this->isMapFiled($field)) {
+                $keyTypeName = $this->getFiledType($this->getMapKeyField($field));
+                $valueTypeName = $this->getFiledType($this->getMapValueField($field));
+                return sprintf(
+                    'public Map<%s, %s> %s;',
+                    $keyTypeName,
+                    $valueTypeName,
+                    $field->getName()
+                );
+            } else {
+                return sprintf('public List<%s> %s;', $javaType, $field->getName());
+            }
+        } else {
+            return sprintf('public %s %s;', $javaType, $field->getName());
         }
-        return sprintf('public %s %s;', $javaType, $field->getName());
     }
 
 }

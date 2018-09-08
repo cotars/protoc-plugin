@@ -20,6 +20,10 @@ message IncMsg {
     bytes bytes = 15;
     EnumDemo enumDemo = 16;
     MsgDemo msgDemo = 17;
+    repeated MsgDemo msgDemos = 18;
+    repeated EnumDemo enumDemos = 19;
+    map<string, EnumDemo> maps = 20;
+    map<int32, MsgDemo> mapInts = 21;
 }
 
 enum IncEnum {

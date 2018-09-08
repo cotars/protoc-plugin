@@ -136,8 +136,12 @@ class JavaBean extends Builder
         // ) . PHP_EOL;
 
         foreach ($descriptor->getNestedType() as $i => $nestedDescriptor) {
-            throw new RuntimeException('please remove NestedType, not support!');
-            $this->wrapDescriptor($nestedDescriptor, $file, $i, $descriptorStruct);
+            $option = $nestedDescriptor->getOptions();
+            if ($option && $option->hasMapEntry()) {
+                continue;
+            }
+            throw new RuntimeException('please remove NestedType, not support, ->'.$nestedDescriptor->getName());
+            $this->wrapDescriptor($nestedDescriptor, $file, $i);
         }
         foreach ($descriptor->getEnumType() as $i => $enumDescriptor) {
             throw new RuntimeException('please remove EnumType, not support!');
@@ -154,6 +158,7 @@ class JavaBean extends Builder
 
     public function appendResponseFile(ResponseFile $file)
     {
+        // echo $file->getContent() .PHP_EOL;
         $this->response->getFile()[] = $file; 
     }
 }
