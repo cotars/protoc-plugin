@@ -3,12 +3,9 @@
 
 if (is_file(__DIR__.'/../vendor/autoload.php')) {
     require_once __DIR__.'/../vendor/autoload.php';
-}
-
-if (is_file(__DIR__.'/../../../vendor/autoload.php')) {
+} else if (is_file(__DIR__.'/../../../vendor/autoload.php')) {
     require_once __DIR__.'/../vendor/autoload.php';
 }
-
 $data = file_get_contents('php://stdin');
 file_put_contents('./proto/demo.bin', $data);
 $plugin = new Cotars\Protoc\Plugin($data);
