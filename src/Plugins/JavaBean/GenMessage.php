@@ -19,6 +19,8 @@ class GenMessage extends GenMessageBase
             $this->file->getPackage()
         ));
         $this->pushLine('');
+        $this->pushLine('import java.util.*;');
+        $this->pushLine('');
         $this->pushLine(sprintf(
             'public class %s {',
             ucfirst($this->message->getName())
