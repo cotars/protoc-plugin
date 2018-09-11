@@ -2,10 +2,16 @@
 
 namespace Cotars\Protoc\Plugins\JavaBean;
 
+use Cotars\Protoc\Plugins\Parser;
 use Google\Protobuf\Internal\FieldDescriptorProto;
 use Google\Protobuf\Internal\FieldDescriptorProto_Type as FieldType;
+
 trait JavaTrait
 {
+    /**
+     * @var Parser
+     */
+    protected $parser;
     public function getContent(): string
     {
         $content = '';
@@ -14,6 +20,34 @@ trait JavaTrait
              $content .= str_pad('', $tab * 4, ' ').$code . "\n";
         }
         return $content;
+    }
+
+    public function writeDoc($proto, $index = 0)
+    {
+        $this->writeDocHeader($index);
+        $location = $this->parser->getLocation($proto);
+        $doc = trim($location->getLeadingComments());
+        if (!$doc) {
+            $doc = trim($location->getTrailingComments());
+        }
+        if (!$doc) {
+            $doc = $this->parser->getDescriptor($proto)->getNamespace();
+        }
+        $docs = explode("\n", $doc);
+        foreach ($docs as $doc) {
+            $this->pushLine(' * '.$doc, $index);
+        }
+        $this->writeDocEnd($index);
+    } 
+
+    public function writeDocHeader($index = 0)
+    {
+        $this->pushLine('/**', $index);
+    }
+
+    public function writeDocEnd($index = 0)
+    {
+        $this->pushLine(' */', $index);
     }
 
     public function getFiledType(FieldDescriptorProto $field): string

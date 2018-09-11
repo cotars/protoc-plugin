@@ -8,6 +8,21 @@ if (is_file(__DIR__.'/../../../autoload.php')) {
 }
 $data = file_get_contents('php://stdin');
 // file_put_contents('./proto/demo.bin', $data);
-$plugin = new Cotars\Protoc\Plugin($data);
-$response = $plugin->builder()->build($plugin);
-echo $response->serializeToString();
+$parser = new Cotars\Protoc\Plugins\Parser($data);
+try {
+    $parser->parse();
+    echo $parser->getResponse()->serializeToString();
+} catch (Throwable $e) {
+    $parser->setDebug(true);
+    $response = $parser->getResponse();
+    $msg = PHP_EOL.'================ERROR==============='.PHP_EOL;
+    $msg .= sprintf(
+        '%s in [%d] %s',
+        $e->getMessage(),
+        $e->getLine(),
+        $e->getFile()
+    ).PHP_EOL;
+    $msg .= '==============================='.PHP_EOL;
+    $msg .= $response->getError();
+    echo $parser->getResponse()->setError($msg)->serializeToString();
+}

@@ -8,6 +8,6 @@ message Mv {
 
 message Msg {
 
-    map<string, Mv> strs  = 1;
+    // map<string, Mv> strs  = 1;
 
 }

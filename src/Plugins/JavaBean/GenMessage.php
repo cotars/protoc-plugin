@@ -14,6 +14,9 @@ class GenMessage extends GenMessageBase
     
     public function generate(): void
     {
+        $this->pushLine('/**');
+        $this->pushLine(' * file:'.$this->file->getName());
+        $this->pushLine(' */');
         $this->pushLine(sprintf(
             'package %s;',
             $this->file->getPackage()
@@ -21,6 +24,7 @@ class GenMessage extends GenMessageBase
         $this->pushLine('');
         $this->pushLine('import java.util.*;');
         $this->pushLine('');
+        $this->writeDoc($this->message);
         $this->pushLine(sprintf(
             'public class %s {',
             ucfirst($this->message->getName())
@@ -42,6 +46,7 @@ class GenMessage extends GenMessageBase
     protected function genField(FieldDescriptorProto $field)
     {
         $javaType = $this->getFiledType($field);
+        $this->writeDoc($field, 1);
         if ($field->getLabel() === FiledLable::LABEL_REPEATED) {
             //is map field
             if ($this->isMapFiled($field)) {

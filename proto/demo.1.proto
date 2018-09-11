@@ -20,7 +20,7 @@ message Msg {
     demo.test.inc.sub.SubMsg subMsg = 8;
     repeated demo.test.inc.sub.SubMsg subMsgs = 9;
     repeated uint32 uint32Vals = 10;
-    // map<string, demo.test.inc.sub.SubMsg> maps = 11;
+    map<string, demo.test.inc.sub.SubMsg> maps = 11;
 }
 
 message SvrCallReq {

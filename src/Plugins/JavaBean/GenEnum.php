@@ -14,11 +14,15 @@ class GenEnum extends GenEnumBase
     use JavaTrait;
     public function generate(): void
     {
+        $this->pushLine('/**');
+        $this->pushLine(' * file:'.$this->file->getName());
+        $this->pushLine(' */');
         $this->pushLine(sprintf(
             'package %s;',
             $this->file->getPackage()
         ));
         $this->pushLine('');
+        $this->writeDoc($this->enum);
         $this->pushLine(sprintf(
             'public enum %s {',
             ucfirst($this->enum->getName())
@@ -30,6 +34,7 @@ class GenEnum extends GenEnumBase
             $this->pushLine('Unknown(-1);', 1);
         }
         foreach ($this->enum->getValue() as $index => $value) {
+            $this->writeDoc($value, 1);
             $this->pushLine(
                 $this->genValue($value, $index == $valueLen - 1),
                 1

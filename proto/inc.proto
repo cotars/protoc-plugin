@@ -1,9 +1,30 @@
 syntax = "proto3";
 
+
+
+
+
+//packagesss
 package demo.test.inc;
 
-message IncMsg {
-    double double = 1;
+//testDoccccccccccccc
+message Testccc{
+    //1111
+    float float = 1;
+    //33333
+    float float2 = 2;
+}
+
+//ssss2222
+message Testccfc{
+    float float = 1;
+    float float2 = 2;
+}
+
+//inc
+message IncMsg{
+    double double = 1;//double laster
+    //float top
     float float = 2;
     int32 int32 = 3;
     int64 int64 = 4;
@@ -22,15 +43,18 @@ message IncMsg {
     MsgDemo msgDemo = 17;
     repeated MsgDemo msgDemos = 18;
     repeated EnumDemo enumDemos = 19;
-    map<string, EnumDemo> maps = 20;
-    map<int32, MsgDemo> mapInts = 21;
+    // map<string, EnumDemo> maps = 20;
+    // map<int32, MsgDemo> mapInts = 21;
 }
-
+/*
+    IncEnum doc
+ */
 enum IncEnum {
-    NIL = 0;
+    NIL = 0;//IncEnum.NIL
 }
 
 enum EnumDemo {
+    //EnumDemo.DEMO_NIL
     DEMO_NIL = 0;
 }
 
