@@ -15,21 +15,23 @@ class GenEnum extends GenEnumBase
     public function generate(): void
     {
         $descriptor = $this->parser->getDescriptor($this->enum);
+        $namespace = $this->getObjectName($descriptor->getParent()->getNamespace());
         $this->pushLine(sprintf(
             'typedef NS_ENUM(NSInteger, %s) {',
             $this->getObjectName($descriptor->getNamespace())
         ));
         $valueLen = count($this->enum->getValue());
         foreach ($this->enum->getValue() as $index => $value) {
-            $this->pushLine($this->genValue($value, $index == $valueLen - 1), 1);
+            $this->pushLine($this->genValue($value, $index == $valueLen - 1, $namespace), 1);
         }
         $this->pushLine('};');
     }
 
-    protected function genValue(EnumValueDescriptorProto $value, $isEnd = false)
+    protected function genValue(EnumValueDescriptorProto $value, $isEnd = false, $namespace)
     {
         return sprintf(
-            '%s = %d,',
+            '%s_%s = %d,',
+            $namespace,
             $value->getName(),
             $value->getNumber()
         );

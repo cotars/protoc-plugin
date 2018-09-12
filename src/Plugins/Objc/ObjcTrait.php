@@ -27,7 +27,7 @@ trait ObjcTrait
     {
         $params = $this->parser->getParams();
         foreach ($params as $p => $v) {
-            if (strrpos($p, 'perfix_') === 0) {
+            if (strrpos($p, 'prefix_') === 0) {
                 $n = substr($p, 7);
                 $package = str_replace($v, $n, $package);
             }
@@ -56,7 +56,7 @@ trait ObjcTrait
 
     public function getPropName($name)
     {
-        $keywords = ['id', 'float', 'double', 'bool'];
+        $keywords = ['id', 'float', 'double', 'bool', 'NULL'];
         if (in_array($name, $keywords)) {
             return $name . '_';
         } else {

@@ -121,4 +121,14 @@ class Descriptor
         $this->namespace = $namespace;
         return $this;
     }
+
+    /**
+     * Get the value of parent
+     *
+     * @return  Descriptor
+     */ 
+    public function getParent()
+    {
+        return $this->parent;
+    }
 }
