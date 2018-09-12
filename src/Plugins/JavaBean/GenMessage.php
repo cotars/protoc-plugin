@@ -45,13 +45,13 @@ class GenMessage extends GenMessageBase
 
     protected function genField(FieldDescriptorProto $field)
     {
-        $javaType = $this->getFiledType($field);
+        $javaType = $this->getFieldType($field);
         $this->writeDoc($field, 1);
         if ($field->getLabel() === FiledLable::LABEL_REPEATED) {
             //is map field
             if ($this->isMapFiled($field)) {
-                $keyTypeName = $this->getFiledType($this->getMapKeyField($field));
-                $valueTypeName = $this->getFiledType($this->getMapValueField($field));
+                $keyTypeName = $this->getFieldType($this->getMapKeyField($field));
+                $valueTypeName = $this->getFieldType($this->getMapValueField($field));
                 return sprintf(
                     'public Map<%s, %s> %s;',
                     $keyTypeName,

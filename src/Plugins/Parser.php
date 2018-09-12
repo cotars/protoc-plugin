@@ -79,8 +79,10 @@ class Parser {
             case 'javabean':
                 $compiler = \Cotars\Protoc\Plugins\JavaBean\Compiler::class;
                 break;
+            case 'objc':
+                $compiler = \Cotars\Protoc\Plugins\Objc\Compiler::class;
+                break;
             default:
-                // $compiler = \Cotars\Protoc\Plugins\JavaBean\Compiler::class;
                 throw new Exception('type not support->'.$type);
         }
         $compiler = new $compiler($this);
@@ -235,5 +237,15 @@ class Parser {
     {
         $this->logger('compiled file', $file->getName());
         $this->response->getFile()[] = $file; 
+    }
+
+    /**
+     * Get the value of params
+     *
+     * @return  array[string]
+     */ 
+    public function getParams()
+    {
+        return $this->params;
     }
 }

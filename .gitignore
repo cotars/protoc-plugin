@@ -3,3 +3,4 @@ composer.phar
 composer.lock
 proto/demo
 proto/demo.bin
+.DS_Store

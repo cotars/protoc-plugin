@@ -69,7 +69,7 @@ class GenEnum extends GenEnumBase
         return sprintf(
             '%s(%d)%s',
             $value->getName(),
-            $value->getNumber,
+            $value->getNumber(),
             $isEnd ? ';' : ','
         );
     }

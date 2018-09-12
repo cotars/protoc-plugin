@@ -50,7 +50,7 @@ trait JavaTrait
         $this->pushLine(' */', $index);
     }
 
-    public function getFiledType(FieldDescriptorProto $field): string
+    public function getFieldType(FieldDescriptorProto $field): string
     {
         $javaType = null;
         switch ($field->getType()) {
