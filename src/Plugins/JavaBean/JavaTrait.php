@@ -50,6 +50,20 @@ trait JavaTrait
         $this->pushLine(' */', $index);
     }
 
+    public function getObjectType($javaType)
+    {
+        $maps = [
+            'int' => 'Integer',
+            'double' => 'Double',
+            'float' => 'Float',
+            'boolean' => 'Boolean'
+        ];
+        if (isset($maps[$javaType])) {
+            return $maps[$javaType];
+        }
+        return $javaType;
+    }
+
     public function getFieldType(FieldDescriptorProto $field): string
     {
         $javaType = null;

@@ -110,7 +110,7 @@ class GenMessage extends GenMessageBase
                     $field->getName()
                 );
             } else {
-                return sprintf('List<%s> %s', $javaType, $field->getName());
+                return sprintf('List<%s> %s', $this->getObjectType($javaType), $field->getName());
             }
         } else {
             return sprintf('%s %s', $javaType, $field->getName());
@@ -134,7 +134,7 @@ class GenMessage extends GenMessageBase
                     $field->getName()
                 );
             } else {
-                return sprintf('%s List<%s> %s;', $decorate, $javaType, $field->getName());
+                return sprintf('%s List<%s> %s;', $decorate, $this->getObjectType($javaType), $field->getName());
             }
         } else {
             return sprintf('%s %s %s;', $decorate, $javaType, $field->getName());
