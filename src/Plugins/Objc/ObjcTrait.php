@@ -5,6 +5,7 @@ namespace Cotars\Protoc\Plugins\Objc;
 use Cotars\Protoc\Plugins\Parser;
 use Google\Protobuf\Internal\FieldDescriptorProto;
 use Google\Protobuf\Internal\FieldDescriptorProto_Type as FieldType;
+use Google\Protobuf\Internal\FieldDescriptorProto_Label as FiledLable;
 
 trait ObjcTrait
 {
@@ -56,7 +57,7 @@ trait ObjcTrait
 
     public function getPropName($name)
     {
-        $keywords = ['id', 'float', 'double', 'bool', 'NULL'];
+        $keywords = ['id', 'float', 'double', 'bool', 'NULL', 'template'];
         if (in_array($name, $keywords)) {
             return $name . '_';
         } else {
@@ -75,16 +76,24 @@ trait ObjcTrait
             case FieldType::TYPE_SINT64:
             case FieldType::TYPE_SFIXED64:
             case FieldType::TYPE_SFIXED32:
-                $type = 'NSInteger';
-                $gc = 'assign';
+                if ($field->getLabel() === FiledLable::LABEL_REPEATED) {
+                    $type = 'NSNumber';
+                } else {
+                    $type = 'NSInteger';
+                    $gc = 'assign';
+                }
                 break;
             
             case FieldType::TYPE_UINT32:
             case FieldType::TYPE_UINT64:
             case FieldType::TYPE_FIXED32:
             case FieldType::TYPE_FIXED64:
-                $type = 'NSUInteger';
-                $gc = 'assign';
+                if ($field->getLabel() === FiledLable::LABEL_REPEATED) {
+                    $type = 'NSNumber';
+                } else {
+                    $type = 'NSUInteger';
+                    $gc = 'assign';
+                }
                 break;
             case FieldType::TYPE_DOUBLE:
             case FieldType::TYPE_FLOAT:
