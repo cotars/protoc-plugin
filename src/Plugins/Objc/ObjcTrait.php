@@ -57,7 +57,7 @@ trait ObjcTrait
 
     public function getPropName($name)
     {
-        $keywords = ['id', 'float', 'double', 'bool', 'NULL', 'template'];
+        $keywords = ['id', 'float', 'double', 'bool', 'NULL', 'template', 'description'];
         if (in_array($name, $keywords)) {
             return $name . '_';
         } else {
