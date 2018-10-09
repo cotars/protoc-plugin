@@ -23,10 +23,11 @@ class GenMessage extends GenMessageBase
         ));
         $this->pushLine('');
         $this->pushLine('import java.util.*;');
+        $this->pushLine('import java.io.Serializable;');
         $this->pushLine('');
         $this->writeDoc($this->message);
         $this->pushLine(sprintf(
-            'public class %s {',
+            'public class %s implements Serializable {',
             ucfirst($this->message->getName())
         ));
         foreach ($this->message->getField() as $filed) {
