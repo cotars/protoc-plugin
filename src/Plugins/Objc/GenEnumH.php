@@ -9,7 +9,7 @@ use Google\Protobuf\Internal\EnumValueDescriptorProto;
 use Google\Protobuf\Internal\FieldDescriptorProto;
 use Google\Protobuf\Internal\FieldDescriptorProto_Type as FieldType;
 
-class GenEnum extends GenEnumBase
+class GenEnumH extends GenEnumBase
 {
     use ObjcTrait;
     public function generate(): void
@@ -25,6 +25,18 @@ class GenEnum extends GenEnumBase
             $this->pushLine($this->genValue($value, $index == $valueLen - 1, $namespace), 1);
         }
         $this->pushLine('};');
+
+        $this->pushLine(sprintf(
+            'NSString * stringFrom%s(%s val);',
+            $this->getObjectName($descriptor->getNamespace()),
+            $this->getObjectName($descriptor->getNamespace())
+        ));
+
+        $this->pushLine(sprintf(
+            'NSNumber * %sFromString(NSString * val);',
+            $this->getObjectName($descriptor->getNamespace())
+        ));
+
     }
 
     protected function genValue(EnumValueDescriptorProto $value, $isEnd = false, $namespace)

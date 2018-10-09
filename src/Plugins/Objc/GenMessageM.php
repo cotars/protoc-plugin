@@ -8,6 +8,8 @@ use Exception;
 use Google\Protobuf\Internal\DescriptorProto;
 use Google\Protobuf\Internal\FieldDescriptorProto;
 use Google\Protobuf\Internal\FieldDescriptorProto_Label as FiledLable;
+use Google\Protobuf\Internal\FieldDescriptorProto_Type as FiledType;
+
 class GenMessageM extends GenMessageBase
 {
     use ObjcTrait;
@@ -23,7 +25,7 @@ class GenMessageM extends GenMessageBase
 
         $keywords = [];
         $classes = [];
-
+        $enums = [];
         foreach ($this->message->getField() as $field) {
             list($type, $gc) = $this->getFieldType($field);
             $fieldName = $this->getPropName($field->getName());
@@ -51,6 +53,29 @@ class GenMessageM extends GenMessageBase
                 // ), 1);
                 // $this->pushLine('}');
             }
+            if ($field->getType() == FiledType::TYPE_ENUM) {
+                $enums[] = [$fieldName, $this->getObjectName($type)];
+            }
+        }
+        if ($enums) {
+            $this->pushLine('');
+            $this->pushLine('- (id)mj_newValueFromOldValue:(id)oldValue property:(MJProperty *)property {');
+            foreach ($enums as $enum) {
+                list($fieldName, $objectName) = $enum;
+                $this->pushLine(sprintf(
+                    'if ([property.name isEqualToString:@"%s"]) {',
+                    $fieldName
+                ), 1);
+                $this->pushLine(sprintf(
+                    'NSNumber * num = %sFromString(oldValue);',
+                    $objectName
+                ), 2);
+                $this->pushLine('return num;', 2);
+                $this->pushLine('}', 1);
+            }
+            $this->pushLine('return oldValue;', 1);
+            $this->pushLine('}');
+            $this->pushLine('');
         }
         // print_r();
         if ($keywords) {

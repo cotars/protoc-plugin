@@ -53,11 +53,16 @@ class Compiler extends CompilerBase
         FileDescriptorProto $file,
         EnumDescriptorProto $enum
     ) {
-
-        $genEnumH = new GenEnum($enum, $file);
+        $genEnumH = new GenEnumH($enum, $file);
         $genEnumH->setParser($this->parser);
         $genEnumH->generate();
         array_unshift($this->hContents, $genEnumH->getContent());
+
+        $genEnumM = new GenEnumM($enum, $file);
+        $genEnumM->setParser($this->parser);
+        $genEnumM->generate();
+        array_unshift($this->mContents, $genEnumM->getContent());
+
     }
 
     public function compileMessage(
