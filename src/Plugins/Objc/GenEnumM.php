@@ -31,24 +31,7 @@ class GenEnumM extends GenEnumBase
             $this->getObjectName($descriptor->getNamespace()),
             $this->getObjectName($descriptor->getNamespace())
         ));
-        $this->pushLine('NSNumber * num = @(-1);', 1);
-        $this->pushLine('NSDictionary * dic = @{', 1);
-        foreach ($this->enum->getValue() as $index => $value) {
-            $this->pushLine(sprintf(
-                '@"%s": @(%s),',
-                $value->getName(),
-                $this->getValueNamespace($value, $namespace)
-            ), 2);
-        }
-        $this->pushLine('};', 1);
-        $this->pushLine('num = [dic objectForKey:val];', 1);
-        $this->pushLine('return num;', 1);
-        $this->pushLine('}');
-        $this->pushLine('');
-        $this->pushLine(sprintf(
-            'NSNumber * %sFromString(NSString * val) {',
-            $this->getObjectName($descriptor->getNamespace())
-        ));
+
         $this->pushLine('NSString * str = @"";', 1);
         $this->pushLine('NSDictionary * dic = @{', 1);
         foreach ($this->enum->getValue() as $index => $value) {
@@ -61,6 +44,26 @@ class GenEnumM extends GenEnumBase
         $this->pushLine('};', 1);
         $this->pushLine('str = [dic objectForKey:@(val)];', 1);
         $this->pushLine('return str;', 1);
+
+        $this->pushLine('}');
+        $this->pushLine('');
+        $this->pushLine(sprintf(
+            'NSNumber * %sFromString(NSString * val) {',
+            $this->getObjectName($descriptor->getNamespace())
+        ));
+        $this->pushLine('NSNumber * num = @(-1);', 1);
+        $this->pushLine('NSDictionary * dic = @{', 1);
+        foreach ($this->enum->getValue() as $index => $value) {
+            $this->pushLine(sprintf(
+                '@"%s": @(%s),',
+                $value->getName(),
+                $this->getValueNamespace($value, $namespace)
+            ), 2);
+        }
+        $this->pushLine('};', 1);
+        $this->pushLine('num = [dic objectForKey:val];', 1);
+        $this->pushLine('return num;', 1);
+
         $this->pushLine('}');
         $this->pushLine('');
         $this->pushLine('');
